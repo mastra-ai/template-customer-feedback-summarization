@@ -22,8 +22,7 @@ cd customer-feedback-summarization
 Create a `.env` file:
 
 ```bash
-OPENAI_API_KEY=sk-...
-GOOGLE_GENERATIVE_AI_API_KEY=...
+OPENAI_API_KEY=your-api-key
 ```
 
 Run it:

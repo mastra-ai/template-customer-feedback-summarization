@@ -1,33 +1,30 @@
-import { Agent } from "@mastra/core/agent";
-import { Memory } from "@mastra/memory";
-import { getFeedbackTool } from "../tools/get-feedback";
-import {
-  actionabilityScorer,
-  completenessScorer,
-} from "../scorers/feedback-scorers";
+import { Agent } from '@mastra/core/agent';
+import { Memory } from '@mastra/memory';
+import { getFeedbackTool } from '../tools/get-feedback';
+import { actionabilityScorer, completenessScorer } from '../scorers/feedback-scorers';
 
 export const feedbackSummarizer = new Agent({
-  id: "feedbackSummarizer",
-  name: "Customer Feedback Summarizer",
+  id: 'feedbackSummarizer',
+  name: 'Customer Feedback Summarizer',
   description:
-    "Analyzes and summarizes customer feedback to produce actionable insights. Retrieves feedback from the database, categorizes it, assesses sentiment and urgency, and generates executive summaries.",
-  model: "openai/gpt-5.2",
+    'Analyzes and summarizes customer feedback to produce actionable insights. Retrieves feedback from the database, categorizes it, assesses sentiment and urgency, and generates executive summaries.',
+  model: 'openai/gpt-5.2',
   tools: { getFeedbackTool },
   scorers: {
     actionabilityScorer: {
       scorer: actionabilityScorer,
-      sampling: { type: "ratio", rate: 1 },
+      sampling: { type: 'ratio', rate: 1 },
     },
     completenessScorer: {
       scorer: completenessScorer,
-      sampling: { type: "ratio", rate: 1 },
+      sampling: { type: 'ratio', rate: 1 },
     },
   },
   memory: new Memory({
     options: {
       lastMessages: 20,
       observationalMemory: {
-        model: "openai/gpt-5-mini",
+        model: 'openai/gpt-5-mini',
       },
     },
   }),
@@ -35,12 +32,12 @@ export const feedbackSummarizer = new Agent({
 
 ## Your tool
 
-You have one tool: **get-feedback**. It retrieves customer feedback from the database with optional filters (source, customer tier, date range) and pagination (limit, offset).
+You have one tool: **getFeedbackTool**. It retrieves customer feedback from the database with optional filters (source, customer tier, date range) and pagination (limit, offset).
 
 ## How to work
 
 When asked to summarize or analyze feedback:
-1. Use get-feedback to retrieve items. The tool paginates, check "has_more" and fetch additional pages if needed to cover the full dataset.
+1. Use **getFeedbackTool** to retrieve items. The tool paginates, check "has_more" and fetch additional pages if needed to cover the full dataset.
 2. Read through the feedback yourself. Categorize each item (bug, feature request, praise, complaint, question), assess sentiment and urgency, and identify themes.
 3. Synthesize into a clear, actionable summary.
 
